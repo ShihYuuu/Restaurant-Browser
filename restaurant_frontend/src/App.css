@@ -1,0 +1,52 @@
+@media screen and (max-width: 400px) {
+  #features {
+    padding: 20px;
+    width: 111%;
+    height: 2063.9px;
+  }
+  #about,
+  #services,
+  #team,
+  #footer {
+    width: 111%;
+  }
+
+  #portfolio {
+    width: 110%;
+  }
+}
+
+.features-container {
+  display: flex;
+  width: 100%;
+  height: 100vh; 
+}
+
+.features-left {
+  height: 1863px;
+  flex: 0 0 20%; 
+  padding: 10px;
+  border-right: 1px solid #ccc; 
+}
+
+.features-right {
+  flex: 1; 
+  padding: 10px;
+}
+
+.container1 ul li {
+  display: flex;
+  align-items: center; 
+  margin-left: 80px;
+  margin-bottom: 10px;
+}
+
+.container1 ul li input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#features h2 {
+  text-align: center;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
