@@ -1,0 +1,45 @@
+# Comment
+image: mcr.microsoft.com/azure-functions/python:4
+
+variables:
+  FUNCTION_VERSION: "4"
+
+stages:
+  - build
+  - deploy
+
+.python-cache:
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+       - .pip
+       - venv/
+
+build:
+    stage: build
+    extends: .python-cache
+    before_script:
+      - apt-get update
+      - apt-get install -y zip
+    script:
+      - zip function_app.zip function_app.py host.json requirements.txt
+    artifacts:
+      paths:
+        - function_app.zip
+      expire_in: 1 day
+
+deploy:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli:latest
+  script:
+    - az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
+    - az account set -s ${AZURE_SUBSCRIPTION_ID}
+    - az functionapp deployment source config-zip -g ${AZURE_RESOURCE_GROUP} -n ${AZURE_FUNCTION_APP_NAME} --src function_app.zip
+  environment:
+    name: production
+
+  #Only deploy from the main branch
+
+  dependencies:
+    - build
+  when: manual
